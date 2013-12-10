@@ -6,7 +6,9 @@ Spree::OrdersController.class_eval do
   # DD: maybe use a format close to OrderPopulator (or move to or decorate there one day)
   # +:subscriptions => { variant_id => interval_id, variant_id => interval_id }
   def check_subscriptions
-    return unless params[:subscriptions] && params[:subscriptions][:active].to_s == "1"
+    
+    # TODO Add check that throws an error if the product is subscribable and an interval is not given
+    return unless params[:subscriptions][:interval_id]
 
     params[:products].each do |product_id,variant_id|
       add_subscription variant_id, params[:subscriptions][:interval_id]
