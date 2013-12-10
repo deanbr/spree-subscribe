@@ -128,9 +128,9 @@ class Spree::Subscription < ActiveRecord::Base
       :billing_address_id => order.bill_address_id,
       :shipping_address_id => order.ship_address_id,
       :shipping_method_id => order.shipping_method_for_variant( self.line_item.variant ).id,
-      :payment_method_id => order.payments.first.payment_method_id,
-      :source_id => order.payments.first.source_id,
-      :source_type => order.payments.first.source_type,
+      :payment_method_id => order.payments.nil? ? nil : order.payments.first.payment_method_id,
+      :source_id => order.payments.nil? ? nil : order.payments.first.source_id,
+      :source_type => order.payments.nil? ? nil : order.payments.first.source_type,
       :user_id => order.user_id
     )
   end
