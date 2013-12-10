@@ -136,7 +136,7 @@ class Spree::Subscription < ActiveRecord::Base
       :user_id => order.user_id
     }
     update_attributes(
-      params.reject(|k, v| v.nil?)
+      params.reject {|k, v| v.nil?}
     )
   end
 
