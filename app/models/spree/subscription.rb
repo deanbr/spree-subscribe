@@ -51,16 +51,16 @@ class Spree::Subscription < ActiveRecord::Base
 
   def create_reorder
     self.new_order = Spree::Order.create(
-        bill_address: self.billing_address.clone,
-        ship_address: self.shipping_address.clone,
-        subscription_id: self.id,
-        email: self.user.email
-      )
+    bill_address: self.billing_address.clone,
+    ship_address: self.shipping_address.clone,
+    subscription_id: self.id,
+    email: self.user.email
+    )
     self.new_order.user_id = self.user_id
 
     # DD: make it work with spree_multi_domain
     if self.new_order.respond_to?(:store_id)
-      self.new_order.store_id = self.line_item.order.store_id
+    self.new_order.store_id = self.line_item.order.store_id
     end
 
     self.new_order.next # -> address
@@ -124,14 +124,19 @@ class Spree::Subscription < ActiveRecord::Base
     order = self.line_item.order
     # DD: TODO: set quantity?
     calculate_reorder_date!
-    update_attributes(
+
+    payment = order.payments.first
+    params = {    
       :billing_address_id => order.bill_address_id,
       :shipping_address_id => order.ship_address_id,
       :shipping_method_id => order.shipping_method_for_variant( self.line_item.variant ).id,
-      :payment_method_id => order.payments.nil? ? nil : order.payments.first.payment_method_id,
-      :source_id => order.payments.nil? ? nil : order.payments.first.source_id,
-      :source_type => order.payments.nil? ? nil : order.payments.first.source_type,
+      :payment_method_id => payment.nil? ? nil : payment.payment_method_id,
+      :source_id => payment.nil? ? nil : payment.source_id,
+      :source_type => payment.nil? ? nil : payment.source_type,
       :user_id => order.user_id
+    }
+    update_attributes(
+      params.reject(|k, v| v.nil?)
     )
   end
 
