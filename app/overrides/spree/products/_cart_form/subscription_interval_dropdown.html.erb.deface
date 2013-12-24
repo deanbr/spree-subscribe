@@ -2,7 +2,7 @@
 <% if @product.subscribable? && @product.subscription_intervals.any? %>
   <%# DD: when supporting multiple variants at a time: variant_id = @product.has_variants? ? @product.variants.first.id : @product.master.id %>
   <div>
-    <%= label_tag "subscriptions[interval_id]", 1 %> Deliver every
+    <%= label_tag "subscriptions[interval_id]", 'Deliver every' %> 
     <%- options = @product.subscription_intervals.collect{|i| [i.name,i.id] } %>
     <%= select_tag "subscriptions[interval_id]", options_for_select(options) %>
   </div>
