@@ -51,10 +51,10 @@ class Spree::Subscription < ActiveRecord::Base
 
   def create_reorder
     self.new_order = Spree::Order.create(
-    bill_address: self.billing_address.clone,
-    ship_address: self.shipping_address.clone,
-    subscription_id: self.id,
-    email: self.user.email
+      bill_address: self.billing_address.clone,
+      ship_address: self.shipping_address.clone,
+      subscription_id: self.id,
+      email: self.user.email
     )
     self.new_order.user_id = self.user_id
 
