@@ -41,4 +41,10 @@ Spree::OrdersController.class_eval do
     line_item.subscription
   end
 
+  def permitted_order_attributes
+    super + [
+            :subscription_id
+          ]
+  end
+
 end
